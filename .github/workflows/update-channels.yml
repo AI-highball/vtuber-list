@@ -1,10 +1,9 @@
 name: Daily VTuber Update
 
-# 毎日午前0時（UTC）に実行 → 日本時間 9:00 頃
 on:
   schedule:
     - cron: '0 0 * * *'
- workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   update:
@@ -13,7 +12,7 @@ jobs:
       # ① リポジトリをチェックアウト
       - uses: actions/checkout@v3
         with:
-          persist-credentials: true  # GITHUB_TOKEN で push できるように
+          persist-credentials: true
 
       # ② Node.js セットアップ
       - name: Setup Node.js
@@ -39,7 +38,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add public/channels.json
-          git commit -m 'chore: auto-update channels.json'
+          git commit -m 'chore: auto-update channels.json' || echo "no changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
